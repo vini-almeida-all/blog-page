@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Se Liga na Leitura — Exemplo Blog 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --surface-subtle: #f7f7f7;
+      --surface-default: #ffffff;
+      --text-primary: #303030;
+      --text-secondary: #525252;
+      --text-muted: #999999;
+      --seliga-cream: #f2f4e4;
+      --seliga-coral: #f2784b;
+      --seliga-pink: #ffd2fa;
+      --seliga-lilac: #a3b1db;
+      --border-subtle: #d9d9d9;
+      --spacing-12: 12px;
+      --spacing-16: 16px;
+      --spacing-24: 24px;
+      --spacing-32: 32px;
+      --spacing-48: 48px;
+      --radius-16: 16px;
+      --radius-24: 24px;
+      --radius-pill: 999px;
+      --body-size: 20px;
+      --body-line: 1.5;
+      --body-paragraph-spacing: 24px;
+      --h1-size: 48px;
+      --h2-size: 36px;
+    }
+
+    * { box-sizing: border-box; }
+    html { background: var(--surface-subtle); }
+    body {
+      margin: 0;
+      min-width: 1024px;
+      color: var(--text-primary);
+      background: var(--surface-subtle);
+      font-family: "Nunito", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+    }
+    img { display: block; }
+    a { color: inherit; }
+
+    .blog-page {
+      width: 100%;
+      background: var(--surface-subtle);
+    }
+
+    .blog-sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--seliga-cream);
+      border-bottom: 1px solid var(--text-primary);
+      overflow: hidden;
+    }
+    .sticky-header-container {
+      width: min(960px, calc(100% - 64px));
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+    .seliga-logo {
+      display: block;
+      width: 173px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .article-main {
+      width: 100%;
+      padding: 64px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--surface-subtle);
+      overflow: hidden;
+    }
+    .article-container {
+      width: 100%;
+      max-width: 1368px;
+      padding-inline: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 48px;
+      overflow: hidden;
+    }
+
+    .article-header {
+      width: 100%;
+      max-width: 760px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+      overflow: hidden;
+    }
+    .article-title {
+      width: 100%;
+      margin: 0;
+      font-size: var(--h1-size);
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: 0;
+      color: var(--text-primary);
+    }
+    .article-meta {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      overflow: hidden;
+    }
+    .article-author {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 0 0 auto;
+    }
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex: 0 0 auto;
+    }
+    .author-name {
+      margin: 0;
+      white-space: nowrap;
+      font-size: 16px;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--text-secondary);
+    }
+    .publish-date {
+      width: 160px;
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .article-chips {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      overflow: hidden;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      min-width: 0;
+      padding: 12px 24px;
+      border: 1px solid var(--text-primary);
+      border-radius: var(--radius-pill);
+      font-size: 14px;
+      line-height: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      color: var(--text-primary);
+    }
+    .chip--type { background: var(--seliga-coral); }
+    .chip--subject { background: var(--surface-default); }
+
+    .editorial-media {
+      width: 100%;
+      max-width: 960px;
+      border-radius: var(--radius-24);
+      overflow: hidden;
+    }
+    .hero-image,
+    .closing-image {
+      width: 100%;
+      aspect-ratio: 960 / 590;
+      object-fit: cover;
+      border-radius: var(--radius-24);
+    }
+
+    .rich-text,
+    .answer,
+    .closing-copy {
+      width: 100%;
+      max-width: 760px;
+      font-size: var(--body-size);
+      line-height: var(--body-line);
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+    .rich-text p,
+    .answer p,
+    .closing-copy p {
+      margin: 0 0 var(--body-paragraph-spacing);
+    }
+    .rich-text p:last-child,
+    .answer p:last-child,
+    .closing-copy p:last-child { margin-bottom: 0; }
+    .rich-text strong,
+    .answer strong,
+    .closing-copy strong { font-weight: 800; }
+    .rich-text em,
+    .answer em,
+    .closing-copy em { font-style: italic; font-weight: 500; }
+    .rich-text a,
+    .answer a,
+    .closing-copy a {
+      text-decoration: underline;
+      text-decoration-thickness: from-font;
+      text-underline-position: from-font;
+    }
+
+    .crystal-divider {
+      width: 100%;
+      max-width: 960px;
+      aspect-ratio: 760 / 72;
+      max-height: 90.9474px;
+      object-fit: contain;
+    }
+
+    .question-card {
+      width: 100%;
+      max-width: 760px;
+      padding: 32px;
+      border: 1px solid var(--text-primary);
+      border-radius: var(--radius-24);
+      background: var(--seliga-pink);
+      overflow: hidden;
+    }
+    .question-card p {
+      width: 100%;
+      margin: 0;
+      font-size: var(--body-size);
+      line-height: var(--body-line);
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .question-card p + p { margin-top: var(--body-paragraph-spacing); }
+
+    .section-divider {
+      width: 100%;
+      max-width: 960px;
+      height: 1px;
+      background: var(--text-primary);
+      flex: 0 0 auto;
+    }
+
+    .related-section {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+      overflow: hidden;
+    }
+    .related-title {
+      width: 100%;
+      margin: 0;
+      font-size: var(--h2-size);
+      line-height: 1.15;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .blog-post-card {
+      width: 100%;
+      height: 260px;
+      padding: 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      overflow: hidden;
+      background: var(--surface-default);
+      /* Desktop instance is 260px with 24px inset around a 212px content row. */
+      border: 0;
+      box-shadow: inset 0 0 0 1px var(--text-primary);
+      border-radius: var(--radius-24);
+      text-decoration: none;
+      color: inherit;
+    }
+    .post-image-horizontal {
+      display: block;
+      width: 344.8955px;
+      height: 212px;
+      flex: 0 0 auto;
+      object-fit: cover;
+      border-radius: var(--radius-16);
+    }
+    .post-image-vertical {
+      display: none;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      flex: 0 0 auto;
+      object-fit: cover;
+      border-radius: var(--radius-16);
+    }
+    .post-content {
+      min-width: 0;
+      height: 212px;
+      flex: 1 1 auto;
+      padding-block: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      /* Text nodes clamp themselves. Do not clip the whole column:
+         that can shave antialiased glyph pixels at the bottom edge. */
+      overflow: visible;
+    }
+    .post-chip-row {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+    .post-title,
+    .post-excerpt {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      overflow-wrap: break-word;
+      word-break: normal;
+    }
+    .post-title {
+      width: 100%;
+      margin: -6px 0;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      font-size: 28px;
+      line-height: 32px;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .post-excerpt {
+      width: 100%;
+      margin: -2.5px 0;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      font-size: 16px;
+      line-height: 20px;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+    .post-date {
+      width: 100%;
+      height: auto;
+      margin: -0.5px 0;
+      overflow: visible;
+      font-size: 16px;
+      line-height: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /*
+      Figma visually trims typographic leading in these text boxes.
+      In HTML we emulate only the resulting spacing with negative block
+      margins while keeping the full natural line box. Do NOT use
+      text-box-edge: cap alphabetic here: it may clip descenders such as
+      q, g, p and y on the final visible line.
+    */
+
+    .newsletter-banner {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1304 / 170.625;
+      object-fit: cover;
+      border-radius: var(--radius-16);
+    }
+
+    /* Tablet — reference: [NEW] SeLiga - Exemplo Blog 1 (Tablet), 768px */
+    @media (min-width: 600px) and (max-width: 1023px) {
+      body {
+        min-width: 600px;
+      }
+
+      .sticky-header-container {
+        width: 100%;
+        max-width: none;
+        padding-inline: 32px;
+      }
+
+      .article-container {
+        width: min(704px, 100%);
+        max-width: 704px;
+        padding-inline: 0;
+      }
+
+      .article-header,
+      .rich-text,
+      .answer,
+      .closing-copy,
+      .question-card {
+        width: calc(100% - 64px);
+        max-width: 640px;
+      }
+
+      .article-title {
+        font-size: 44px;
+      }
+
+      .editorial-media,
+      .crystal-divider,
+      .section-divider,
+      .related-section {
+        width: 100%;
+        max-width: 704px;
+      }
+
+      .crystal-divider {
+        height: 60px;
+        aspect-ratio: auto;
+      }
+
+      .question-card {
+        padding: 28px;
+      }
+
+      .section-divider {
+        background: var(--text-primary);
+      }
+
+      .related-title {
+        font-size: 32px;
+      }
+
+      .blog-post-card {
+        height: 262px;
+        border: 1px solid var(--text-primary);
+        box-shadow: none;
+      }
+
+      /* Horizontal BlogPostCard keeps the same 212px media/content height on tablet. */
+      .post-image-horizontal,
+      .post-content {
+        height: 212px;
+      }
+      .post-image-horizontal {
+        width: 344.8955px;
+      }
+
+      .newsletter-banner {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 704 / 94.325;
+      }
+    }
+
+
+    /* BlogPostCard variant switch: preserve readable text width below 700px. */
+    @media (max-width: 700px) {
+      .blog-post-card {
+        height: auto;
+        flex-direction: column;
+        gap: 24px;
+        padding: 24px 24px 36px;
+        border: 1px solid var(--text-primary);
+        box-shadow: none;
+      }
+
+      .post-image-horizontal {
+        display: none;
+      }
+
+      .post-image-vertical {
+        display: block;
+      }
+
+      .post-content {
+        width: 100%;
+        height: 260px;
+        flex: 0 0 260px;
+        padding: 0;
+        gap: 24px;
+      }
+
+      .post-title {
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+      }
+    }
+
+    /* Mobile — reference: [NEW] SeLiga - Exemplo Blog 1 (Mobile), 390px */
+    @media (max-width: 599px) {
+      :root {
+        --body-size: 18px;
+        --body-paragraph-spacing: 20px;
+        --h1-size: 36px;
+        --h2-size: 28px;
+      }
+
+      body {
+        min-width: 0;
+      }
+
+      .blog-sticky-header {
+        height: 56px;
+      }
+
+      .sticky-header-container {
+        width: 100%;
+        height: 56px;
+        padding-inline: 16px;
+      }
+
+      .article-main {
+        padding: 48px 16px;
+        align-items: flex-start;
+      }
+
+      .article-container {
+        width: 100%;
+        max-width: none;
+        padding-inline: 0;
+        gap: 32px;
+      }
+
+      .article-header,
+      .rich-text,
+      .answer,
+      .closing-copy,
+      .question-card {
+        width: 100%;
+        max-width: none;
+      }
+
+      .article-title {
+        font-size: 36px;
+      }
+
+      .article-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 16px;
+      }
+
+      .author-avatar {
+        width: 36px;
+        height: 36px;
+      }
+
+      .author-name {
+        font-size: 14px;
+      }
+
+      .publish-date {
+        width: 100%;
+      }
+
+      .editorial-media,
+      .crystal-divider,
+      .section-divider,
+      .related-section {
+        width: 100%;
+        max-width: none;
+      }
+
+      .hero-image,
+      .closing-image {
+        aspect-ratio: 358 / 220;
+      }
+
+      .rich-text,
+      .answer,
+      .closing-copy {
+        font-size: 18px;
+      }
+
+      .rich-text p,
+      .answer p,
+      .closing-copy p {
+        margin-bottom: 20px;
+      }
+
+      .crystal-divider {
+        height: 48px;
+        max-height: none;
+        aspect-ratio: auto;
+      }
+
+      .question-card {
+        padding: 20px;
+      }
+
+      .question-card p {
+        font-size: 18px;
+      }
+
+      .question-card p + p {
+        margin-top: 20px;
+      }
+
+      .section-divider {
+        background: var(--text-primary);
+      }
+
+      .related-title {
+        font-size: 28px;
+      }
+
+      .newsletter-banner {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 358 / 47.9664;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="blog-page" data-reference-frame="[NEW] SeLiga - Exemplo Blog 1 (Desktop)">
+    <header class="blog-sticky-header" aria-label="Se Liga na Leitura">
+      <div class="sticky-header-container">
+        <img class="seliga-logo" src="https://www.figma.com/api/mcp/asset/1261253b-acc7-46e1-8c1a-1ab87307e4b7/ccf5b.svg" alt="Se Liga na Leitura">
+      </div>
+    </header>
+
+    <article class="article-main">
+      <div class="article-container">
+        <header class="article-header">
+          <h1 class="article-title">Ariani Castelo: romantasia e o sucesso de Coração de Cristal Partido</h1>
+
+          <div class="article-meta">
+            <div class="article-author">
+              <img class="author-avatar" src="./assets/author-avatar-placeholder.png" alt="" data-author-image="runtime">
+              <p class="author-name">GIOVANA MARTINEZ</p>
+            </div>
+            <p class="publish-date">18 DE SET DE 2026</p>
+          </div>
+
+          <div class="article-chips" aria-label="Metadados da matéria">
+            <span class="chip chip--type">ENTREVISTAS</span>
+            <span class="chip chip--subject">VOZES NACIONAIS</span>
+          </div>
+        </header>
+
+        <div class="editorial-media">
+          <img class="hero-image" src="https://www.figma.com/api/mcp/asset/1261253b-acc7-46e1-8c1a-1ab87307e4b7/fb53e.png" alt="Ariani Castelo em peça editorial sobre Coração de Cristal Partido">
+        </div>
+
+        <section class="rich-text" aria-label="Introdução">
+          <p>Se existe algo que a fantasia nacional vem provando nos últimos anos é que não faltam histórias brasileiras capazes de conquistar leitores e ocupar espaço ao lado dos grandes sucessos internacionais. E Ariani Castelo sabe bem disso.</p>
+          <p>Autora de <a href="https://leitura.com.br/o-abismo-de-celina-L999-9786555324594" target="_blank" rel="noopener"><em>O Abismo de Celina</em></a>, fenômeno que conquistou uma legião de leitores, Ariani chega à Bienal Internacional do Livro de São Paulo de 2026 celebrando o sucesso de seu lançamento mais recente, <a href="https://leitura.com.br/coracao-de-cristal-partido-L999-9786555326789" target="_blank" rel="noopener"><em>Coração de Cristal Partido</em></a>. Publicado pela Rocco, o livro se tornou o título mais vendido da editora durante a Bienal, superando até mesmo as expectativas da própria autora.</p>
+          <p>Na nova história, acompanhamos Rayka, uma jovem que nasceu sem o poder dos cristais considerados mais importantes pela sociedade em que vive. Ao lado de Luka, seu inimigo que se torna aliado por conveniência, ela se vê envolvida em uma trama marcada por magia, divindades, relações complexas e personagens que estão tão quebrados quanto o mundo ao seu redor.</p>
+          <p>Conversamos com Ariani Castelo durante a Bienal do Livro sobre a pressão de suceder um fenômeno, o espaço da fantasia nacional, os preconceitos em torno da romantasia, a construção de personagens moralmente complexos e o que ela diria para a Ariani do início da carreira.</p>
+        </section>
+
+        <img class="crystal-divider" src="https://www.figma.com/api/mcp/asset/1261253b-acc7-46e1-8c1a-1ab87307e4b7/4ef5a.png" alt="" aria-hidden="true">
+
+        <section class="question-card">
+          <p>Ariani, muita gente já te conhece pelo fenômeno de O Abismo de Celina e agora seu lançamento mais recente, Coração de Cristal Partido, é o livro mais vendido da Rocco nesta Bienal, né?</p>
+          <p>Você esperava o mesmo sucesso conquistado com O Abismo de Celina? Existe uma pressão nesse sentido, de superar o livro anterior, ou você deixa acontecer?</p>
+        </section>
+
+        <section class="answer">
+          <p>Eu me sinto pressionada, mas por mim mesma. <em>(Risos)</em> Eu acredito que sou a minha maior incentivadora e também a minha maior fonte de pressão.</p>
+          <p>Mas, enfim, tinha essa pressão, mas também tinha muito orgulho, sabe? Eu pensava que, independente de qualquer coisa, de resultados de vendas ou de críticas positivas ou negativas, eu teria orgulho do que escrevi. Foi um livro em que trabalhei durante mais de um ano e em uma história em que eu acredito.</p>
+          <p>É óbvio que eu tinha algumas preocupações. É um livro maior, então o valor dele seria mais caro. Tudo isso são coisas que impactam, e que também me prepararam para, talvez, o livro não vender tanto quanto <em>O Abismo</em>, que é mais barato e menor.</p>
+          <p>Mas é bem incrível ver que o contrário aconteceu, né?</p>
+        </section>
+
+        <section class="question-card"><p>Como é ocupar um espaço tão grande na fantasia nacional ao lado de sucessos internacionais?</p></section>
+        <section class="answer"><p>Ariani descreve esse momento como uma honra e conta que ainda se surpreende ao ver seus livros próximos de grandes franquias. Para ela, também existe a alegria de mostrar a outras autoras brasileiras que esse espaço é possível.</p></section>
+
+        <section class="question-card"><p>O rótulo de romantasia incomoda? E como você enxerga o preconceito em torno do gênero?</p></section>
+        <section class="answer"><p>Ela não vê romantasia como algo menor e rejeita a ideia de que romance diminua uma obra. Ao mesmo tempo, chama atenção para o hábito de colocar praticamente toda fantasia escrita por mulheres nessa mesma categoria, mesmo quando o romance não é o centro da história.</p></section>
+
+        <section class="question-card"><p>O que mais te atraiu na dinâmica entre Rayka e Luka?</p></section>
+        <section class="answer"><p>A autora diz gostar de escrever personagens emocionalmente complexos. Rayka e Luka carregam experiências difíceis e, por isso, constroem afeto e confiança de maneiras imperfeitas — algo que ela considera coerente com o mundo quebrado em que vivem.</p></section>
+
+        <section class="question-card"><p>A relação de Rayka com os cristais nasceu de uma reflexão sobre pertencimento?</p></section>
+        <section class="answer"><p>Sim. A protagonista possui um poder diferente daquele valorizado por sua sociedade. A história usa isso para questionar a ideia de que não se encaixar é necessariamente ruim e mostra como outros personagens conseguem reconhecer valor justamente nessa diferença.</p></section>
+
+        <section class="question-card"><p>Que conselho você daria à Ariani do primeiro lançamento?</p></section>
+        <section class="answer"><p>Ela diria para viver a própria jornada e confiar mais no próprio instinto. Carreiras de escrita e publicação seguem caminhos muito diferentes, e tentar repetir a trajetória de outras pessoas pode afastar o autor do que faz sentido para a própria história.</p></section>
+
+        <div class="editorial-media">
+          <img class="closing-image" src="https://www.figma.com/api/mcp/asset/1261253b-acc7-46e1-8c1a-1ab87307e4b7/b931c.png" alt="Imagem editorial de encerramento da matéria">
+        </div>
+
+        <section class="closing-copy">
+          <p><a href="https://leitura.com.br/coracao-de-cristal-partido-L999-9786555326789" target="_blank" rel="noopener"><em>Coração de Cristal Partido</em></a> já está disponível na <a href="https://leitura.com.br/" target="_blank" rel="noopener">Livraria Leitura</a>. Rayka e Luka ainda têm bastante coisa para resolver — e a graça está justamente em descobrir como essa aliança por conveniência se transforma ao longo da história.</p>
+        </section>
+
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <section class="related-section">
+          <h2 class="related-title">Leia também</h2>
+          <a class="blog-post-card" href="#" aria-label="Rivalidade Ardente: quando o romance sai do gelo e chega às telas">
+            <img class="post-image-horizontal" src="https://www.figma.com/api/mcp/asset/1261253b-acc7-46e1-8c1a-1ab87307e4b7/b967a.png" alt="">
+            <img class="post-image-vertical" src="https://www.figma.com/api/mcp/asset/ac97f430-499d-4921-8a12-e339296bfae6/ce6b5.png" alt="">
+            <div class="post-content">
+              <div class="post-chip-row"><span class="chip" style="background: var(--seliga-lilac)">RESENHAS</span></div>
+              <h3 class="post-title">Rivalidade Ardente: quando o romance sai do gelo e chega às telas</h3>
+              <p class="post-excerpt">Confesso: eu tinha um certo preconceito com romances de hóquei. Não com o hóquei em si, pelo contrário. Gosto muito do esporte e, justamente por isso, fico incomodada quando livros usam o cenário esportivo de qualquer jeito. Então, apesar de Rivalidade Ardente, de Rachel Reid, estar há algum tempo na minha lista, eu nunca tinha me aventurado na série Game Changers.</p>
+              <p class="post-date">18 de setembro de 2026</p>
+            </div>
+          </a>
+        </section>
+
+        <img class="newsletter-banner" src="https://www.figma.com/api/mcp/asset/1261253b-acc7-46e1-8c1a-1ab87307e4b7/f33ec.png" alt="Newsletter">
+      </div>
+    </article>
+  </main>
+</body>
+</html>
